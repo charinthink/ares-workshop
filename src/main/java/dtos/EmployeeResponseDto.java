@@ -12,8 +12,8 @@ public class EmployeeResponseDto {
     private String firstName;
     private String surName;
     private Integer old;
-    private List<EmployeeRequestDto.Address> addresses;
-    private EmployeeRequestDto.Company company;
+    private List<EmployeeResponseDto.Address> addresses;
+    private EmployeeResponseDto.Company company;
 
     public Long getId() {
         return id;
@@ -55,19 +55,19 @@ public class EmployeeResponseDto {
         this.old = old;
     }
 
-    public List<EmployeeRequestDto.Address> getAddresses() {
+    public List<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<EmployeeRequestDto.Address> addresses) {
+    public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public EmployeeRequestDto.Company getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(EmployeeRequestDto.Company company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 
@@ -124,6 +124,7 @@ public class EmployeeResponseDto {
     public static class Company {
         private Long id;
         private CompanyConst companyConst;
+        private Office office;
 
         public Long getId() {
             return id;
@@ -140,12 +141,21 @@ public class EmployeeResponseDto {
         public void setCompanyConst(CompanyConst companyConst) {
             this.companyConst = companyConst;
         }
+
+        public Office getOffice() {
+            return office;
+        }
+
+        public void setOffice(Office office) {
+            this.office = office;
+        }
     }
 
     /* Class Office */
     public static class Office {
         private Long id;
         private OfficeConst officeName;
+        private Department department;
 
         public Long getId() {
             return id;
@@ -161,6 +171,14 @@ public class EmployeeResponseDto {
 
         public void setOfficeName(OfficeConst officeName) {
             this.officeName = officeName;
+        }
+
+        public Department getDepartment() {
+            return department;
+        }
+
+        public void setDepartment(Department department) {
+            this.department = department;
         }
     }
 

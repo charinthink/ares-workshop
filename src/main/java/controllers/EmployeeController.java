@@ -1,14 +1,23 @@
-package views;
+package controllers;
 
 import dtos.EmployeeRequestDto;
 import dtos.EmployeeResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import services.EmployeeService;
 
 import java.util.List;
 
-public class EmployeeView implements EmployeeViewImpl {
+public class EmployeeController implements EmployeeControllerImpl {
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @Override
     public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) {
-        return null;
+        EmployeeResponseDto response = employeeService.createEmployee(employeeRequestDto);
+        return response;
     }
 
     @Override

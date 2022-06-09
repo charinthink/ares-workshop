@@ -1,11 +1,11 @@
-package views;
+package controllers;
 
 import dtos.EmployeeRequestDto;
 import dtos.EmployeeResponseDto;
 
 import java.util.List;
 
-public interface EmployeeViewImpl {
+public interface EmployeeControllerImpl {
     EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto);
     EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto);
     List<EmployeeResponseDto> findAll();

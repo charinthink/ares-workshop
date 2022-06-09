@@ -1,16 +1,18 @@
 package services;
 
+import dtos.EmployeeRequestDto;
+import dtos.EmployeeResponseDto;
 import entityes.Employee;
 
 import java.util.List;
 
 public interface EmployeeServiceImpl {
-    Employee createEmployee(Employee employee);
-    List<Employee> findAll();
-    Employee findById(Long id);
-    Employee updateById(Long id, Employee employee);
-    List<Employee> findByDepartmentId(Long id);
-    List<Employee> findByOfficeId(Long id);
+    EmployeeResponseDto createEmployee(EmployeeRequestDto employee);
+    List<EmployeeResponseDto> findAll();
+    EmployeeResponseDto findById(Long id);
+    EmployeeResponseDto updateById(Long id, EmployeeRequestDto employee);
+    List<EmployeeResponseDto> findByDepartmentId(Long id);
+    List<EmployeeResponseDto> findByOfficeId(Long id);
     void deleteAll();
     void deleteById(Long id);
     void deleteByDepartmentId(Long id);

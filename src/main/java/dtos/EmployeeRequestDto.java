@@ -105,6 +105,7 @@ public class EmployeeRequestDto {
     /* Class Company */
     public static class Company {
         private CompanyConst companyConst;
+        private Office office;
 
         public CompanyConst getCompanyConst() {
             return companyConst;
@@ -113,11 +114,20 @@ public class EmployeeRequestDto {
         public void setCompanyConst(CompanyConst companyConst) {
             this.companyConst = companyConst;
         }
+
+        public Office getOffice() {
+            return office;
+        }
+
+        public void setOffice(Office office) {
+            this.office = office;
+        }
     }
 
     /* Class Office */
     public static class Office {
         private OfficeConst officeName;
+        private Department department;
 
         public OfficeConst getOfficeName() {
             return officeName;
@@ -125,6 +135,14 @@ public class EmployeeRequestDto {
 
         public void setOfficeName(OfficeConst officeName) {
             this.officeName = officeName;
+        }
+
+        public Department getDepartment() {
+            return department;
+        }
+
+        public void setDepartment(Department department) {
+            this.department = department;
         }
     }
 
