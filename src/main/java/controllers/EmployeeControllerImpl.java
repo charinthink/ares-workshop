@@ -10,7 +10,6 @@ public interface EmployeeControllerImpl {
     EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto);
     List<EmployeeResponseDto> findAll();
     EmployeeResponseDto findById(Long id);
-    EmployeeResponseDto updateById(Long id, EmployeeRequestDto employeeRequestDto);
     List<EmployeeResponseDto> findByDepartmentId(Long id);
     List<EmployeeResponseDto> findByOfficeId(Long id);
     void deleteAll();

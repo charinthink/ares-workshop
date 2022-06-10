@@ -2,7 +2,6 @@ package controllers;
 
 import dtos.EmployeeRequestDto;
 import dtos.EmployeeResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import services.EmployeeService;
 
 import java.util.List;
@@ -22,51 +21,51 @@ public class EmployeeController implements EmployeeControllerImpl {
 
     @Override
     public EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto) {
-        return null;
+        EmployeeResponseDto response = employeeService.updateById(id, employeeRequestDto);
+        return response;
     }
 
     @Override
     public List<EmployeeResponseDto> findAll() {
-        return null;
+        List<EmployeeResponseDto> response = employeeService.findAll();
+        return response;
     }
 
     @Override
     public EmployeeResponseDto findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public EmployeeResponseDto updateById(Long id, EmployeeRequestDto employeeRequestDto) {
-        return null;
+        EmployeeResponseDto response = employeeService.findById(id);
+        return response;
     }
 
     @Override
     public List<EmployeeResponseDto> findByDepartmentId(Long id) {
-        return null;
+        List<EmployeeResponseDto> response = employeeService.findByDepartmentId(id);
+        return response;
     }
 
     @Override
     public List<EmployeeResponseDto> findByOfficeId(Long id) {
-        return null;
+        List<EmployeeResponseDto> response = employeeService.findByOfficeId(id);
+        return response;
     }
 
     @Override
     public void deleteAll() {
-
+        employeeService.deleteAll();
     }
 
     @Override
     public void deleteById(Long id) {
-
+        employeeService.deleteById(id);
     }
 
     @Override
     public void deleteByDepartmentId(Long id) {
-
+        employeeService.deleteByDepartmentId(id);
     }
 
     @Override
     public void deleteByOfficeId(Long id) {
-
+        employeeService.deleteByOfficeId(id);
     }
 }
