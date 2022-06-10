@@ -1,20 +1,20 @@
 package util;
 
-import dtos.EmployeeRequestDto;
+import dtos.EmployeeDto;
 import entityes.*;
 
 public class EntityMapper {
-    public static Employee toEmployee(EmployeeRequestDto employeeRequestDto) {
+    public static Employee toEmployee(EmployeeDto employeeDto) {
         Employee employee = new Employee();
-        employee.setTitleName(employeeRequestDto.getTitleName());
-        employee.setFirstName(employeeRequestDto.getFirstName());
-        employee.setSurName(employeeRequestDto.getSurName());
-        employee.setOld(employeeRequestDto.getOld());
+        employee.setTitleName(employeeDto.getTitleName());
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setSurName(employeeDto.getSurName());
+        employee.setOld(employeeDto.getOld());
 
         return employee;
     }
 
-    public static Address toAddress(EmployeeRequestDto.Address addressRequestDto) {
+    public static Address toAddress(EmployeeDto.Address addressRequestDto) {
         Address address = new Address();
         address.setAddress(addressRequestDto.getAddress());
         address.setCity(addressRequestDto.getCity());
@@ -24,21 +24,21 @@ public class EntityMapper {
         return address;
     }
 
-    public static Company toCompany(EmployeeRequestDto.Company companyRequestDto) {
+    public static Company toCompany(EmployeeDto.Company companyRequestDto) {
         Company company = new Company();
         company.setCompanyConst(companyRequestDto.getCompanyConst());
 
         return company;
     }
 
-    public static Office toOffice(EmployeeRequestDto.Office officeRequestDto) {
+    public static Office toOffice(EmployeeDto.Office officeRequestDto) {
         Office office = new Office();
         office.setOfficeName(officeRequestDto.getOfficeName());
 
         return office;
     }
 
-    public static Department toDepartment(EmployeeRequestDto.Department departmentRequestDto) {
+    public static Department toDepartment(EmployeeDto.Department departmentRequestDto) {
         Department department = new Department();
         department.setDepartmentName(departmentRequestDto.getDepartmentName());
 

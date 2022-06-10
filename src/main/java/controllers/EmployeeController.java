@@ -1,7 +1,6 @@
 package controllers;
 
-import dtos.EmployeeRequestDto;
-import dtos.EmployeeResponseDto;
+import dtos.EmployeeDto;
 import services.EmployeeService;
 
 import java.util.List;
@@ -14,39 +13,39 @@ public class EmployeeController implements EmployeeControllerImpl {
     }
 
     @Override
-    public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) {
-        EmployeeResponseDto response = employeeService.createEmployee(employeeRequestDto);
+    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+        EmployeeDto response = employeeService.createEmployee(employeeDto);
+        return response;
+    }
+    public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) {
+        return null;
+    }
+
+    @Override
+    public List<EmployeeDto> findAll() {
+        List<EmployeeDto> resposne = employeeService.findAll();
+        return resposne;
+    }
+
+    @Override
+    public EmployeeDto findById(Long id) {
+        EmployeeDto response = employeeService.findById(id);
         return response;
     }
 
     @Override
-    public EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto) {
-        EmployeeResponseDto response = employeeService.updateById(id, employeeRequestDto);
-        return response;
+    public EmployeeDto updateById(Long id, EmployeeDto employeeDto) {
+        return null;
     }
 
     @Override
-    public List<EmployeeResponseDto> findAll() {
-        List<EmployeeResponseDto> response = employeeService.findAll();
-        return response;
+    public List<EmployeeDto> findByDepartmentId(Long id) {
+        return null;
     }
 
     @Override
-    public EmployeeResponseDto findById(Long id) {
-        EmployeeResponseDto response = employeeService.findById(id);
-        return response;
-    }
-
-    @Override
-    public List<EmployeeResponseDto> findByDepartmentId(Long id) {
-        List<EmployeeResponseDto> response = employeeService.findByDepartmentId(id);
-        return response;
-    }
-
-    @Override
-    public List<EmployeeResponseDto> findByOfficeId(Long id) {
-        List<EmployeeResponseDto> response = employeeService.findByOfficeId(id);
-        return response;
+    public List<EmployeeDto> findByOfficeId(Long id) {
+        return null;
     }
 
     @Override

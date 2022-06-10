@@ -1,19 +1,29 @@
 package controllers;
 
-import dtos.EmployeeRequestDto;
-import dtos.EmployeeResponseDto;
+import dtos.EmployeeDto;
 
 import java.util.List;
 
 public interface EmployeeControllerImpl {
-    EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto);
-    EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto);
-    List<EmployeeResponseDto> findAll();
-    EmployeeResponseDto findById(Long id);
-    List<EmployeeResponseDto> findByDepartmentId(Long id);
-    List<EmployeeResponseDto> findByOfficeId(Long id);
+    EmployeeDto createEmployee(EmployeeDto employeeDto);
+
+    EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto);
+
+    List<EmployeeDto> findAll();
+
+    EmployeeDto findById(Long id);
+
+    EmployeeDto updateById(Long id, EmployeeDto employeeDto);
+
+    List<EmployeeDto> findByDepartmentId(Long id);
+
+    List<EmployeeDto> findByOfficeId(Long id);
+
     void deleteAll();
+
     void deleteById(Long id);
+
     void deleteByDepartmentId(Long id);
+
     void deleteByOfficeId(Long id);
 }

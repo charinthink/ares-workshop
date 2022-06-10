@@ -1,19 +1,20 @@
 package services;
 
-import dtos.EmployeeRequestDto;
-import dtos.EmployeeResponseDto;
+import dtos.EmployeeDto;
 import entityes.*;
 import util.DtoMapper;
 import util.EntityMapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static db_on_memory.DB.*;
 
 public class EmployeeService implements EmployeeServiceImpl {
     @Override
-    public EmployeeResponseDto createEmployee(EmployeeRequestDto employee) {
+    public EmployeeDto createEmployee(EmployeeDto employee) {
         Long id = (long) (Math.random() * 10);
 
         Employee employeeNew = EntityMapper.toEmployee(employee);
@@ -41,19 +42,19 @@ public class EmployeeService implements EmployeeServiceImpl {
         /* Save */
         DB.add(employeeNew);
 
-        EmployeeResponseDto employeeResponseDto = DtoMapper.toEmployeeDto(employeeNew);
+        EmployeeDto employeeResponseDto = DtoMapper.toEmployeeDto(employeeNew);
 
-        List<EmployeeResponseDto.Address> addressesResponseDto = addressNew.stream()
+        List<EmployeeDto.Address> addressesResponseDto = addressNew.stream()
                 .map(DtoMapper::toAddressDto)
                 .collect(Collectors.toList());
         employeeResponseDto.setAddresses(addressesResponseDto);
 
-        EmployeeResponseDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(departmentNew);
+        EmployeeDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(departmentNew);
 
-        EmployeeResponseDto.Office officeResponseDto = DtoMapper.toOfficeDto(officeNew);
+        EmployeeDto.Office officeResponseDto = DtoMapper.toOfficeDto(officeNew);
         officeResponseDto.setDepartment(departmentResponseDto);
 
-        EmployeeResponseDto.Company companyResponseDto = DtoMapper.toCompanyDto(companyNew);
+        EmployeeDto.Company companyResponseDto = DtoMapper.toCompanyDto(companyNew);
         companyResponseDto.setOffice(officeResponseDto);
 
         employeeResponseDto.setCompany(companyResponseDto);
@@ -62,27 +63,27 @@ public class EmployeeService implements EmployeeServiceImpl {
     }
 
     @Override
-    public List<EmployeeResponseDto> findAll() {
+    public List<EmployeeDto> findAll() {
         return null;
     }
 
     @Override
-    public EmployeeResponseDto findById(Long id) {
+    public EmployeeDto findById(Long id) {
         return null;
     }
 
     @Override
-    public EmployeeResponseDto updateById(Long id, EmployeeRequestDto employee) {
+    public EmployeeDto updateById(Long id, EmployeeDto employee) {
         return null;
     }
 
     @Override
-    public List<EmployeeResponseDto> findByDepartmentId(Long id) {
+    public List<EmployeeDto> findByDepartmentId(Long id) {
         return null;
     }
 
     @Override
-    public List<EmployeeResponseDto> findByOfficeId(Long id) {
+    public List<EmployeeDto> findByOfficeId(Long id) {
         return null;
     }
 
@@ -105,4 +106,5 @@ public class EmployeeService implements EmployeeServiceImpl {
     public void deleteByOfficeId(Long id) {
 
     }
+
 }
