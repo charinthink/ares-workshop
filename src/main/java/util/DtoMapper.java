@@ -1,11 +1,11 @@
 package util;
 
-import dtos.EmployeeResponseDto;
+import dtos.EmployeeDto;
 import entityes.*;
 
 public class DtoMapper {
-    public static EmployeeResponseDto toEmployeeDto(Employee employee) {
-        EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
+    public static EmployeeDto toEmployeeDto(Employee employee) {
+        EmployeeDto employeeResponseDto = new EmployeeDto();
         employeeResponseDto.setId(employee.getId());
         employeeResponseDto.setTitleName(employee.getTitleName());
         employeeResponseDto.setFirstName(employee.getFirstName());
@@ -15,8 +15,8 @@ public class DtoMapper {
         return employeeResponseDto;
     }
 
-    public static EmployeeResponseDto.Address toAddressDto(Address address) {
-        EmployeeResponseDto.Address addressDto = new EmployeeResponseDto.Address();
+    public static EmployeeDto.Address toAddressDto(Address address) {
+        EmployeeDto.Address addressDto = new EmployeeDto.Address();
         addressDto.setId(address.getId());
         addressDto.setAddress(address.getAddress());
         addressDto.setCity(address.getCity());
@@ -26,24 +26,24 @@ public class DtoMapper {
         return addressDto;
     }
 
-    public static EmployeeResponseDto.Company toCompanyDto(Company company) {
-        EmployeeResponseDto.Company companyDto = new EmployeeResponseDto.Company();
+    public static EmployeeDto.Company toCompanyDto(Company company) {
+        EmployeeDto.Company companyDto = new EmployeeDto.Company();
         companyDto.setId(company.getId());
         companyDto.setCompanyConst(company.getCompanyConst());
 
         return companyDto;
     }
 
-    public static EmployeeResponseDto.Department toDepartmentDto(Department department) {
-        EmployeeResponseDto.Department departmentDto = new EmployeeResponseDto.Department();
+    public static EmployeeDto.Department toDepartmentDto(Department department) {
+        EmployeeDto.Department departmentDto = new EmployeeDto.Department();
         departmentDto.setId(department.getId());
         departmentDto.setDepartmentName(departmentDto.getDepartmentName());
 
         return departmentDto;
     }
 
-    public static EmployeeResponseDto.Office toOfficeDto(Office office) {
-        EmployeeResponseDto.Office officeDto = new EmployeeResponseDto.Office();
+    public static EmployeeDto.Office toOfficeDto(Office office) {
+        EmployeeDto.Office officeDto = new EmployeeDto.Office();
         officeDto.setId(office.getId());
         officeDto.setOfficeName(office.getOfficeName());
 

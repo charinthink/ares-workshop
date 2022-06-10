@@ -6,14 +6,14 @@ import consts.OfficeConst;
 
 import java.util.List;
 
-public class EmployeeResponseDto {
+public class EmployeeDto {
     private Long id;
     private String titleName;
     private String firstName;
     private String surName;
     private Integer old;
-    private List<EmployeeResponseDto.Address> addresses;
-    private EmployeeResponseDto.Company company;
+    private List<Address> addresses;
+    private Company company;
 
     public Long getId() {
         return id;

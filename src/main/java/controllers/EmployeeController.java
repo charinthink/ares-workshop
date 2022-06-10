@@ -1,8 +1,6 @@
 package controllers;
 
-import dtos.EmployeeRequestDto;
-import dtos.EmployeeResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import dtos.EmployeeDto;
 import services.EmployeeService;
 
 import java.util.List;
@@ -15,38 +13,40 @@ public class EmployeeController implements EmployeeControllerImpl {
     }
 
     @Override
-    public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) {
-        EmployeeResponseDto response = employeeService.createEmployee(employeeRequestDto);
+    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+        EmployeeDto response = employeeService.createEmployee(employeeDto);
         return response;
     }
 
     @Override
-    public EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto) {
+    public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) {
         return null;
     }
 
     @Override
-    public List<EmployeeResponseDto> findAll() {
+    public List<EmployeeDto> findAll() {
+        List<EmployeeDto> resposne = employeeService.findAll();
+        return resposne;
+    }
+
+    @Override
+    public EmployeeDto findById(Long id) {
+        EmployeeDto response = employeeService.findById(id);
+        return response;
+    }
+
+    @Override
+    public EmployeeDto updateById(Long id, EmployeeDto employeeDto) {
         return null;
     }
 
     @Override
-    public EmployeeResponseDto findById(Long id) {
+    public List<EmployeeDto> findByDepartmentId(Long id) {
         return null;
     }
 
     @Override
-    public EmployeeResponseDto updateById(Long id, EmployeeRequestDto employeeRequestDto) {
-        return null;
-    }
-
-    @Override
-    public List<EmployeeResponseDto> findByDepartmentId(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<EmployeeResponseDto> findByOfficeId(Long id) {
+    public List<EmployeeDto> findByOfficeId(Long id) {
         return null;
     }
 

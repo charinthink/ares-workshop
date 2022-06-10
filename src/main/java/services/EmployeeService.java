@@ -1,20 +1,20 @@
 package services;
 
-import dtos.EmployeeRequestDto;
-import dtos.EmployeeResponseDto;
+import dtos.EmployeeDto;
 import entityes.*;
 import util.DtoMapper;
 import util.EntityMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static db_on_memory.DB.*;
 
 public class EmployeeService implements EmployeeServiceImpl {
     @Override
-    public EmployeeResponseDto createEmployee(EmployeeRequestDto employee) {
+    public EmployeeDto createEmployee(EmployeeDto employee) {
         Long id = (long) (Math.random() * 10);
 
         Employee employeeNew = EntityMapper.toEmployee(employee);
@@ -42,19 +42,19 @@ public class EmployeeService implements EmployeeServiceImpl {
         /* Save */
         DB.add(employeeNew);
 
-        EmployeeResponseDto employeeResponseDto = DtoMapper.toEmployeeDto(employeeNew);
+        EmployeeDto employeeResponseDto = DtoMapper.toEmployeeDto(employeeNew);
 
-        List<EmployeeResponseDto.Address> addressesResponseDto = addressNew.stream()
+        List<EmployeeDto.Address> addressesResponseDto = addressNew.stream()
                 .map(DtoMapper::toAddressDto)
                 .collect(Collectors.toList());
         employeeResponseDto.setAddresses(addressesResponseDto);
 
-        EmployeeResponseDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(departmentNew);
+        EmployeeDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(departmentNew);
 
-        EmployeeResponseDto.Office officeResponseDto = DtoMapper.toOfficeDto(officeNew);
+        EmployeeDto.Office officeResponseDto = DtoMapper.toOfficeDto(officeNew);
         officeResponseDto.setDepartment(departmentResponseDto);
 
-        EmployeeResponseDto.Company companyResponseDto = DtoMapper.toCompanyDto(companyNew);
+        EmployeeDto.Company companyResponseDto = DtoMapper.toCompanyDto(companyNew);
         companyResponseDto.setOffice(officeResponseDto);
 
         employeeResponseDto.setCompany(companyResponseDto);
@@ -63,23 +63,23 @@ public class EmployeeService implements EmployeeServiceImpl {
     }
 
     @Override
-    public List<EmployeeResponseDto> findAll() {
-        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+    public List<EmployeeDto> findAll() {
+        List<EmployeeDto> employeeResponseDtos = new ArrayList<>();
         DB.stream()
                 .forEach(em -> {
-                    EmployeeResponseDto employeeResponseDto = DtoMapper.toEmployeeDto(em);
+                    EmployeeDto employeeResponseDto = DtoMapper.toEmployeeDto(em);
 
-                    List<EmployeeResponseDto.Address> addressesResponseDto = em.getAddress()
+                    List<EmployeeDto.Address> addressesResponseDto = em.getAddress()
                             .stream()
                             .map(DtoMapper::toAddressDto)
                             .collect(Collectors.toList());
 
-                    EmployeeResponseDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(em.getCompany().getOffice().getDepartment());
+                    EmployeeDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(em.getCompany().getOffice().getDepartment());
 
-                    EmployeeResponseDto.Office officeResponseDto = DtoMapper.toOfficeDto(em.getCompany().getOffice());
+                    EmployeeDto.Office officeResponseDto = DtoMapper.toOfficeDto(em.getCompany().getOffice());
                     officeResponseDto.setDepartment(departmentResponseDto);
 
-                    EmployeeResponseDto.Company companyResponseDto = DtoMapper.toCompanyDto(em.getCompany());
+                    EmployeeDto.Company companyResponseDto = DtoMapper.toCompanyDto(em.getCompany());
                     companyResponseDto.setOffice(officeResponseDto);
 
                     employeeResponseDto.setCompany(companyResponseDto);
@@ -90,22 +90,65 @@ public class EmployeeService implements EmployeeServiceImpl {
     }
 
     @Override
-    public EmployeeResponseDto findById(Long id) {
+    public EmployeeDto findById(Long id) {
+        Employee employee = DB.stream()
+                .filter(em -> em.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (Objects.nonNull(employee)) {
+            EmployeeDto employeeResponseDto = DtoMapper.toEmployeeDto(employee);
+
+            List<EmployeeDto.Address> addressesResponseDto = employee.getAddress()
+                    .stream()
+                    .map(DtoMapper::toAddressDto)
+                    .collect(Collectors.toList());
+
+            EmployeeDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(employee.getCompany().getOffice().getDepartment());
+
+            EmployeeDto.Office officeResponseDto = DtoMapper.toOfficeDto(employee.getCompany().getOffice());
+            officeResponseDto.setDepartment(departmentResponseDto);
+
+            EmployeeDto.Company companyResponseDto = DtoMapper.toCompanyDto(employee.getCompany());
+            companyResponseDto.setOffice(officeResponseDto);
+
+            employeeResponseDto.setCompany(companyResponseDto);
+
+            return employeeResponseDto;
+        }
+
         return null;
     }
 
     @Override
-    public EmployeeResponseDto updateById(Long id, EmployeeRequestDto employee) {
+    public EmployeeDto updateById(Long id, EmployeeDto employee) {
+        Employee employeeDb = DB.stream()
+                .filter(em -> em.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (Objects.nonNull(employeeDb)) {
+            employeeDb.setOld(employee.getOld());
+            employeeDb.setTitleName(employee.getTitleName());
+            employeeDb.setFirstName(employee.getFirstName());
+            employeeDb.setSurName(employee.getSurName());
+
+            List<Address> addresses = employeeDb.getAddress();
+            employee.getAddresses()
+                    .stream().forEach(addr -> {
+//                        addresses.stream().filter(addrDb -> addrDb.getId().equals(addr.getId()));
+                    });
+        }
         return null;
     }
 
     @Override
-    public List<EmployeeResponseDto> findByDepartmentId(Long id) {
+    public List<EmployeeDto> findByDepartmentId(Long id) {
         return null;
     }
 
     @Override
-    public List<EmployeeResponseDto> findByOfficeId(Long id) {
+    public List<EmployeeDto> findByOfficeId(Long id) {
         return null;
     }
 
