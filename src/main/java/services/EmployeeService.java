@@ -6,6 +6,7 @@ import entityes.*;
 import util.DtoMapper;
 import util.EntityMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +64,29 @@ public class EmployeeService implements EmployeeServiceImpl {
 
     @Override
     public List<EmployeeResponseDto> findAll() {
-        return null;
+        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+        DB.stream()
+                .forEach(em -> {
+                    EmployeeResponseDto employeeResponseDto = DtoMapper.toEmployeeDto(em);
+
+                    List<EmployeeResponseDto.Address> addressesResponseDto = em.getAddress()
+                            .stream()
+                            .map(DtoMapper::toAddressDto)
+                            .collect(Collectors.toList());
+
+                    EmployeeResponseDto.Department departmentResponseDto = DtoMapper.toDepartmentDto(em.getCompany().getOffice().getDepartment());
+
+                    EmployeeResponseDto.Office officeResponseDto = DtoMapper.toOfficeDto(em.getCompany().getOffice());
+                    officeResponseDto.setDepartment(departmentResponseDto);
+
+                    EmployeeResponseDto.Company companyResponseDto = DtoMapper.toCompanyDto(em.getCompany());
+                    companyResponseDto.setOffice(officeResponseDto);
+
+                    employeeResponseDto.setCompany(companyResponseDto);
+                    employeeResponseDtos.add(employeeResponseDto);
+                });
+
+        return employeeResponseDtos;
     }
 
     @Override

@@ -74,10 +74,18 @@ public class EmployeeTest {
         address.setAddress("111 m.8");
         address.setCity("Moeng");
         address.setCountry("Thailand");
-        address.setPostcode("21000");
+        address.setPostcode("22000");
         data.getAddresses().add(address);
 
         EmployeeResponseDto response = employeeController.createEmployee(data);
         assertTrue(response.getAddresses().size() > 1);
+        assertTrue(response.getAddresses().stream().anyMatch(addr -> addr.getPostcode().equals("22000")));
+    }
+
+    @Test
+    public void findAll() {
+        EmployeeRequestDto data = mockData();
+
+
     }
 }
