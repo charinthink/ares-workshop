@@ -11,6 +11,10 @@ import services.EmployeeService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EmployeeTest {
     private final EmployeeController employeeController;
@@ -23,8 +27,8 @@ public class EmployeeTest {
     public EmployeeRequestDto mockData() {
         EmployeeRequestDto requestDto = new EmployeeRequestDto();
         requestDto.setTitleName("Mr");
-        requestDto.setFirstName("Charin");
-        requestDto.setSurName("Wiset");
+        requestDto.setFirstName("Demo");
+        requestDto.setSurName("Demo");
         requestDto.setOld(25);
 
         List<EmployeeRequestDto.Address> addresses = new ArrayList<>();
@@ -57,6 +61,23 @@ public class EmployeeTest {
         EmployeeRequestDto data = mockData();
 
         EmployeeResponseDto response = employeeController.createEmployee(data);
-        System.out.println(response.getId());
+        assertTrue(Objects.nonNull(response.getId()));
+        assertEquals(response.getFirstName(), "Demo");
+        assertEquals(response.getSurName(), "Demo");
+    }
+
+    @Test
+    public void createEmployeeMultipleAddr() {
+        EmployeeRequestDto data = mockData();
+
+        EmployeeRequestDto.Address address = new EmployeeRequestDto.Address();
+        address.setAddress("111 m.8");
+        address.setCity("Moeng");
+        address.setCountry("Thailand");
+        address.setPostcode("21000");
+        data.getAddresses().add(address);
+
+        EmployeeResponseDto response = employeeController.createEmployee(data);
+        assertTrue(response.getAddresses().size() > 1);
     }
 }
