@@ -10,7 +10,7 @@ public class DtoMapper {
         employeeResponseDto.setTitleName(employee.getTitleName());
         employeeResponseDto.setFirstName(employee.getFirstName());
         employeeResponseDto.setSurName(employee.getSurName());
-        employeeResponseDto.setOld(employee.getOld());
+        employeeResponseDto.setAge(employee.getAge());
 
         return employeeResponseDto;
     }
