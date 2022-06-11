@@ -37,7 +37,8 @@ public class EmployeeController implements EmployeeControllerImpl {
 
     @Override
     public EmployeeDto updateById(Long id, EmployeeDto employeeDto) {
-        return null;
+        EmployeeDto response = employeeService.updateById(id, employeeDto);
+        return response;
     }
 
     @Override

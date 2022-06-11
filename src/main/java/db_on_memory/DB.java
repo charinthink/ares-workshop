@@ -7,4 +7,8 @@ import java.util.List;
 
 public class DB {
     public static List<Employee> DB = new ArrayList<>();
+
+    public static void close() {
+        DB.clear();
+    }
 }

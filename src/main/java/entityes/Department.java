@@ -5,6 +5,8 @@ import consts.DepartmentConst;
 public class Department {
     private Long id;
     private DepartmentConst departmentName;
+    /* Parent */
+    private Office office;
 
     public Long getId() {
         return id;
@@ -20,5 +22,13 @@ public class Department {
 
     public void setDepartmentName(DepartmentConst departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public Office getOffice() {
+        return office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
     }
 }
