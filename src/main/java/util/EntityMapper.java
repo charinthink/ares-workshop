@@ -9,7 +9,7 @@ public class EntityMapper {
         employee.setTitleName(employeeDto.getTitleName());
         employee.setFirstName(employeeDto.getFirstName());
         employee.setSurName(employeeDto.getSurName());
-        employee.setOld(employeeDto.getOld());
+        employee.setAge(employeeDto.getAge());
 
         return employee;
     }

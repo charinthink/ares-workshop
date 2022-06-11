@@ -7,7 +7,7 @@ public class Employee {
     private String titleName;
     private String firstName;
     private String surName;
-    private Integer old;
+    private Integer age;
     private List<Address> address;
     private Company company;
 
@@ -43,12 +43,12 @@ public class Employee {
         this.surName = surName;
     }
 
-    public Integer getOld() {
-        return old;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setOld(Integer old) {
-        this.old = old;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public List<Address> getAddress() {
