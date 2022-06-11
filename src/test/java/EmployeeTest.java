@@ -2,6 +2,7 @@ import consts.CompanyConst;
 import consts.DepartmentConst;
 import consts.OfficeConst;
 import controllers.EmployeeController;
+import db_on_memory.DB;
 import dtos.EmployeeDto;
 import org.junit.Test;
 import services.EmployeeService;
@@ -9,6 +10,7 @@ import services.EmployeeService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -63,6 +65,8 @@ public class EmployeeTest {
         assertTrue(Objects.nonNull(response.getId()));
         assertEquals(response.getFirstName(), "Demo");
         assertEquals(response.getSurName(), "Demo");
+
+        DB.close();
     }
 
     @Test
@@ -79,6 +83,8 @@ public class EmployeeTest {
         EmployeeDto response = employeeController.createEmployee(data);
         assertTrue(response.getAddresses().size() > 1);
         assertTrue(response.getAddresses().stream().anyMatch(addr -> addr.getPostcode().equals("22000")));
+
+        DB.close();
     }
 
     @Test
@@ -92,6 +98,7 @@ public class EmployeeTest {
         List<EmployeeDto> response = employeeController.findAll();
 
         assertEquals(response.size(), 10);
+        DB.close();
     }
 
     @Test
@@ -107,7 +114,44 @@ public class EmployeeTest {
 
         long emNumber = emId.stream().filter(id -> Objects.nonNull(employeeController.findById(id))).count();
         assertEquals(emNumber, 10);
+
+        DB.close();
     }
 
+    @Test
+    public void updateEmployee() {
+        List<Integer> numberRand = new ArrayList<>();
+        List<EmployeeDto> keepResponse = new ArrayList<>();
 
+        IntStream.range(0, 10).forEach(i -> {
+            EmployeeDto data = mockData();
+            EmployeeDto responseCreate = employeeController.createEmployee(data);
+            responseCreate.getAddresses()
+                    .stream()
+                    .forEach(addr -> {
+                        int mathRand = (int) (Math.random() * 10);
+                        numberRand.add(mathRand);
+
+                        addr.setAddress(String.valueOf(mathRand));
+                    });
+
+            keepResponse.add(employeeController.updateById(responseCreate.getId(), responseCreate));
+        });
+
+        AtomicInteger count = new AtomicInteger();
+        keepResponse.stream()
+                .forEach(v -> {
+                    boolean found = v.getAddresses()
+                            .stream()
+                            .anyMatch(addr -> numberRand.stream()
+                                    .anyMatch(number -> Integer.toString(number).equals(addr.getAddress())));
+                    if (found)
+                        count.getAndIncrement();
+                });
+
+        assertEquals(keepResponse.size(), 10);
+        assertEquals(count.get(), 10);
+
+        DB.close();
+    }
 }

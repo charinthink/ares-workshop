@@ -4,7 +4,9 @@ import consts.CompanyConst;
 
 public class Company {
     private Long id;
+    private Employee employee;
     private CompanyConst companyConst;
+    /* Child */
     private Office office;
 
     public Long getId() {
@@ -29,5 +31,13 @@ public class Company {
 
     public void setOffice(Office office) {
         this.office = office;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }
