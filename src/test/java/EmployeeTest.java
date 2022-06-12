@@ -4,7 +4,6 @@ import consts.OfficeConst;
 import controllers.EmployeeController;
 import db_on_memory.DB;
 import dtos.EmployeeDto;
-import entityes.Employee;
 import org.junit.Test;
 import services.EmployeeService;
 
@@ -123,10 +122,23 @@ public class EmployeeTest {
     public void updateEmployee() {
         List<Integer> numberRand = new ArrayList<>();
         List<EmployeeDto> keepResponse = new ArrayList<>();
+        AtomicInteger countAddr = new AtomicInteger();
 
         IntStream.range(0, 10).forEach(i -> {
             EmployeeDto data = mockData();
             EmployeeDto responseCreate = employeeController.createEmployee(data);
+
+            IntStream.range(0, 5).forEach( x -> {
+                EmployeeDto.Address addressDto = new EmployeeDto.Address();
+                addressDto.setAddress("111 m.8");
+                addressDto.setCity("Moeng");
+                addressDto.setCountry("Thailand");
+                addressDto.setPostcode("21000");
+
+                responseCreate.getAddresses().add(addressDto);
+                countAddr.getAndIncrement();
+            });
+
             responseCreate.getAddresses()
                     .stream()
                     .forEach(addr -> {
@@ -137,7 +149,6 @@ public class EmployeeTest {
                     });
 
             keepResponse.add(employeeController.updateById(responseCreate.getId(), responseCreate));
-
         });
 
         AtomicInteger count = new AtomicInteger();
@@ -151,8 +162,11 @@ public class EmployeeTest {
                         count.getAndIncrement();
                 });
 
+
         assertEquals(keepResponse.size(), 10);
         assertEquals(count.get(), 10);
+        assertEquals(countAddr.get(), 50);
+        assertEquals(keepResponse.get(0).getAddresses().get(0).getCity(), "Moeng");
 
         DB.close();
     }
