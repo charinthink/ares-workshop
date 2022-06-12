@@ -43,12 +43,14 @@ public class EmployeeController implements EmployeeControllerImpl {
 
     @Override
     public List<EmployeeDto> findByDepartmentId(Long id) {
-        return null;
+        List<EmployeeDto> response = employeeService.findByDepartmentId(id);
+        return response;
     }
 
     @Override
     public List<EmployeeDto> findByOfficeId(Long id) {
-        return null;
+        List<EmployeeDto> resposne = employeeService.findByOfficeId(id);
+        return resposne;
     }
 
     @Override

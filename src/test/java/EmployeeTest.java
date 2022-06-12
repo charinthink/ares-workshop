@@ -4,6 +4,7 @@ import consts.OfficeConst;
 import controllers.EmployeeController;
 import db_on_memory.DB;
 import dtos.EmployeeDto;
+import entityes.Employee;
 import org.junit.Test;
 import services.EmployeeService;
 
@@ -30,7 +31,7 @@ public class EmployeeTest {
         requestDto.setTitleName("Mr");
         requestDto.setFirstName("Demo");
         requestDto.setSurName("Demo");
-        requestDto.setOld(25);
+        requestDto.setAge(25);
 
         List<EmployeeDto.Address> addresses = new ArrayList<>();
         EmployeeDto.Address address = new EmployeeDto.Address();
@@ -151,6 +152,35 @@ public class EmployeeTest {
 
         assertEquals(keepResponse.size(), 10);
         assertEquals(count.get(), 10);
+
+        DB.close();
+    }
+
+    @Test
+    public void findByDepartmentId() {
+        EmployeeDto employee = mockData();
+
+        EmployeeDto response = employeeController.createEmployee(employee);
+        Long id = response.getCompany().getOffice().getDepartment().getId();
+
+
+        List<EmployeeDto> responses = employeeController.findByDepartmentId(id);
+
+        assertTrue(responses.size() > 0);
+
+        DB.close();
+    }
+
+    @Test
+    public void findByOfficeId() {
+        EmployeeDto employeeDto = mockData();
+
+        EmployeeDto response = employeeController.createEmployee(employeeDto);
+        Long id = response.getCompany().getOffice().getId();
+
+        List<EmployeeDto> responses = employeeController.findByOfficeId(id);
+
+        assertTrue(responses.size() > 0);
 
         DB.close();
     }
