@@ -55,7 +55,7 @@ public class EmployeeController implements EmployeeControllerImpl {
 
     @Override
     public void deleteAll() {
-
+        employeeService.deleteAll();
     }
 
     @Override
