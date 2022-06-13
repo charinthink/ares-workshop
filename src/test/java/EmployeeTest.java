@@ -4,6 +4,7 @@ import consts.OfficeConst;
 import controllers.EmployeeController;
 import db_on_memory.DB;
 import dtos.EmployeeDto;
+import entityes.Employee;
 import org.junit.Test;
 import services.EmployeeService;
 
@@ -63,8 +64,8 @@ public class EmployeeTest {
 
         EmployeeDto response = employeeController.createEmployee(data);
         assertTrue(Objects.nonNull(response.getId()));
-        assertEquals(response.getFirstName(), "Demo");
-        assertEquals(response.getSurName(), "Demo");
+        assertEquals("Demo", response.getFirstName());
+        assertEquals("Demo", response.getSurName());
 
         DB.close();
     }
@@ -97,7 +98,7 @@ public class EmployeeTest {
 
         List<EmployeeDto> response = employeeController.findAll();
 
-        assertEquals(response.size(), 10);
+        assertEquals(10, response.size());
         DB.close();
     }
 
@@ -113,7 +114,7 @@ public class EmployeeTest {
         List<Long> emId = response.stream().map(EmployeeDto::getId).collect(Collectors.toList());
 
         long emNumber = emId.stream().filter(id -> Objects.nonNull(employeeController.findById(id))).count();
-        assertEquals(emNumber, 10);
+        assertEquals(10, emNumber);
 
         DB.close();
     }
@@ -163,10 +164,10 @@ public class EmployeeTest {
                 });
 
 
-        assertEquals(keepResponse.size(), 10);
-        assertEquals(count.get(), 10);
-        assertEquals(countAddr.get(), 50);
-        assertEquals(keepResponse.get(0).getAddresses().get(0).getCity(), "Moeng");
+        assertEquals(10, keepResponse.size());
+        assertEquals(10, count.get());
+        assertEquals(50, countAddr.get());
+        assertEquals("Moeng", keepResponse.get(0).getAddresses().get(0).getCity());
 
         DB.close();
     }
@@ -198,5 +199,18 @@ public class EmployeeTest {
         assertTrue(responses.size() > 0);
 
         DB.close();
+    }
+
+    @Test
+    public void deleteAll(){
+        IntStream.range(0, 10).forEach(i -> {
+            EmployeeDto employeeDto = mockData();
+            EmployeeDto response = employeeController.createEmployee(employeeDto);
+        });
+
+        employeeController.deleteAll();
+
+        List<EmployeeDto> employeeDtos = employeeController.findAll();
+        assertEquals(0, employeeDtos.size());
     }
 }
