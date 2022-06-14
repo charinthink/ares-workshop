@@ -1,14 +1,10 @@
 package db_on_memory;
 
-import entityes.Employee;
+import entityes.Company;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DB {
-    public static List<Employee> DB = new ArrayList<>();
-
-    public static void close() {
-        DB.clear();
-    }
+    public static List<Company> DB = new ArrayList<>();
 }

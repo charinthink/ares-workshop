@@ -1,11 +1,14 @@
 package util;
 
-import dtos.EmployeeDto;
+import dtos.CompanyDto;
 import entityes.*;
 
+import java.util.Objects;
+
 public class EntityMapper {
-    public static Employee toEmployee(EmployeeDto employeeDto) {
+    public static Employee toEmployee(CompanyDto.EmployeeDto employeeDto) {
         Employee employee = new Employee();
+        employee.setId(employeeDto.getId());
         employee.setTitleName(employeeDto.getTitleName());
         employee.setFirstName(employeeDto.getFirstName());
         employee.setSurName(employeeDto.getSurName());
@@ -14,33 +17,37 @@ public class EntityMapper {
         return employee;
     }
 
-    public static Address toAddress(EmployeeDto.Address addressRequestDto) {
+    public static Address toAddress(CompanyDto.AddressDto addressDto) {
         Address address = new Address();
-        address.setAddress(addressRequestDto.getAddress());
-        address.setCity(addressRequestDto.getCity());
-        address.setCountry(addressRequestDto.getCountry());
-        address.setPostcode(addressRequestDto.getPostcode());
+        address.setId(addressDto.getId());
+        address.setAddress(addressDto.getAddress());
+        address.setCity(addressDto.getCity());
+        address.setCountry(addressDto.getCountry());
+        address.setPostcode(addressDto.getPostcode());
 
         return address;
     }
 
-    public static Company toCompany(EmployeeDto.Company companyRequestDto) {
+    public static Company toCompany(CompanyDto companyDto) {
         Company company = new Company();
-        company.setCompanyConst(companyRequestDto.getCompanyConst());
+        company.setId(companyDto.getId());
+        company.setCompanyName(companyDto.getCompanyName());
 
         return company;
     }
 
-    public static Office toOffice(EmployeeDto.Office officeRequestDto) {
+    public static Office toOffice(CompanyDto.OfficeDto officeDto) {
         Office office = new Office();
-        office.setOfficeName(officeRequestDto.getOfficeName());
+        office.setId(officeDto.getId());
+        office.setOfficeName(officeDto.getOfficeName());
 
         return office;
     }
 
-    public static Department toDepartment(EmployeeDto.Department departmentRequestDto) {
+    public static Department toDepartment(CompanyDto.DepartmentDto departmentDto) {
         Department department = new Department();
-        department.setDepartmentName(departmentRequestDto.getDepartmentName());
+        department.setId(departmentDto.getId());
+        department.setDepartmentName(departmentDto.getDepartmentName());
 
         return department;
     }

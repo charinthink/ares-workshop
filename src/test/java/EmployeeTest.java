@@ -1,216 +1,70 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import consts.CompanyConst;
 import consts.DepartmentConst;
 import consts.OfficeConst;
-import controllers.EmployeeController;
-import db_on_memory.DB;
-import dtos.EmployeeDto;
+import controllers.CompanyController;
+import dtos.CompanyDto;
 import entityes.Employee;
 import org.junit.Test;
-import services.EmployeeService;
+import services.CompanyService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EmployeeTest {
-    private final EmployeeController employeeController;
+    private final CompanyController companyController;
 
     public EmployeeTest() {
-        EmployeeService employeeService = new EmployeeService();
-        employeeController = new EmployeeController(employeeService);
+        CompanyService companyService = new CompanyService();
+        companyController = new CompanyController(companyService);
     }
 
-    public EmployeeDto mockData() {
-        EmployeeDto requestDto = new EmployeeDto();
-        requestDto.setTitleName("Mr");
-        requestDto.setFirstName("Demo");
-        requestDto.setSurName("Demo");
-        requestDto.setAge(25);
+    public CompanyDto mockData() {
+        CompanyDto companyDto = new CompanyDto();
+        companyDto.setId(1L);
+        companyDto.setCompanyName(CompanyConst.GREEK_TECHNOLOGY);
 
-        List<EmployeeDto.Address> addresses = new ArrayList<>();
-        EmployeeDto.Address address = new EmployeeDto.Address();
-        address.setAddress("111 m.8");
-        address.setCity("Moeng");
-        address.setCountry("Thailand");
-        address.setPostcode("21000");
-        addresses.add(address);
-        requestDto.setAddresses(addresses);
+        CompanyDto.DepartmentDto departmentDto = new CompanyDto.DepartmentDto();
+        departmentDto.setId(1L);
+        departmentDto.setDepartmentName(DepartmentConst.ZEUS);
 
-        EmployeeDto.Department department = new EmployeeDto.Department();
-        department.setDepartmentName(DepartmentConst.ATHENA);
+        CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
+        officeDto.setId(1L);
+        officeDto.setOfficeName(OfficeConst.KUBERNETES_CAMPUS);
+        officeDto.setDepartment(departmentDto);
 
-        EmployeeDto.Office office = new EmployeeDto.Office();
-        office.setOfficeName(OfficeConst.KUBERNETES_CAMPUS);
-        office.setDepartment(department);
+        List<CompanyDto.AddressDto> addressesDto = new ArrayList<>();
+        CompanyDto.AddressDto addressDto = new CompanyDto.AddressDto();
+        addressDto.setAddress("1112");
+        addressDto.setCity("Thai");
+        addressDto.setCountry("Thailand");
+        addressDto.setPostcode("11000");
+        addressesDto.add(addressDto);
 
-        EmployeeDto.Company company = new EmployeeDto.Company();
-        company.setCompanyConst(CompanyConst.GREEK_TECHNOLOGY);
-        company.setOffice(office);
+        CompanyDto.EmployeeDto employeeDto = new CompanyDto.EmployeeDto();
+        employeeDto.setTitleName("Mr");
+        employeeDto.setFirstName("demo");
+        employeeDto.setSurName("demodemo");
+        employeeDto.setAge(20);
+        employeeDto.setAddresses(addressesDto);
+        employeeDto.setOffice(officeDto);
 
-        requestDto.setCompany(company);
+        companyDto.setEmployee(employeeDto);
 
-        return requestDto;
-    }
-
-    @Test
-    public void createEmployee() {
-        EmployeeDto data = mockData();
-
-        EmployeeDto response = employeeController.createEmployee(data);
-        assertTrue(Objects.nonNull(response.getId()));
-        assertEquals("Demo", response.getFirstName());
-        assertEquals("Demo", response.getSurName());
-
-        DB.close();
+        return companyDto;
     }
 
     @Test
-    public void createEmployeeMultipleAddr() {
-        EmployeeDto data = mockData();
+    public void createEmployee() throws JsonProcessingException {
+        CompanyDto data = mockData();
+        CompanyDto companyDto = companyController.createEmployee(data);
 
-        EmployeeDto.Address address = new EmployeeDto.Address();
-        address.setAddress("111 m.8");
-        address.setCity("Moeng");
-        address.setCountry("Thailand");
-        address.setPostcode("22000");
-        data.getAddresses().add(address);
-
-        EmployeeDto response = employeeController.createEmployee(data);
-        assertTrue(response.getAddresses().size() > 1);
-        assertTrue(response.getAddresses().stream().anyMatch(addr -> addr.getPostcode().equals("22000")));
-
-        DB.close();
-    }
-
-    @Test
-    public void findAll() {
-        IntStream.range(0, 10).forEach(i -> {
-            EmployeeDto data = mockData();
-
-            employeeController.createEmployee(data);
-        });
-
-        List<EmployeeDto> response = employeeController.findAll();
-
-        assertEquals(10, response.size());
-        DB.close();
-    }
-
-    @Test
-    public void findById() {
-        IntStream.range(0, 10).forEach(i -> {
-            EmployeeDto data = mockData();
-
-            employeeController.createEmployee(data);
-        });
-
-        List<EmployeeDto> response = employeeController.findAll();
-        List<Long> emId = response.stream().map(EmployeeDto::getId).collect(Collectors.toList());
-
-        long emNumber = emId.stream().filter(id -> Objects.nonNull(employeeController.findById(id))).count();
-        assertEquals(10, emNumber);
-
-        DB.close();
-    }
-
-    @Test
-    public void updateEmployee() {
-        List<Integer> numberRand = new ArrayList<>();
-        List<EmployeeDto> keepResponse = new ArrayList<>();
-        AtomicInteger countAddr = new AtomicInteger();
-
-        IntStream.range(0, 10).forEach(i -> {
-            EmployeeDto data = mockData();
-            EmployeeDto responseCreate = employeeController.createEmployee(data);
-
-            IntStream.range(0, 5).forEach( x -> {
-                EmployeeDto.Address addressDto = new EmployeeDto.Address();
-                addressDto.setAddress("111 m.8");
-                addressDto.setCity("Moeng");
-                addressDto.setCountry("Thailand");
-                addressDto.setPostcode("21000");
-
-                responseCreate.getAddresses().add(addressDto);
-                countAddr.getAndIncrement();
-            });
-
-            responseCreate.getAddresses()
-                    .stream()
-                    .forEach(addr -> {
-                        int mathRand = (int) (Math.random() * 10);
-                        numberRand.add(mathRand);
-
-                        addr.setAddress(String.valueOf(mathRand));
-                    });
-
-            keepResponse.add(employeeController.updateById(responseCreate.getId(), responseCreate));
-        });
-
-        AtomicInteger count = new AtomicInteger();
-        keepResponse.stream()
-                .forEach(v -> {
-                    boolean found = v.getAddresses()
-                            .stream()
-                            .anyMatch(addr -> numberRand.stream()
-                                    .anyMatch(number -> Integer.toString(number).equals(addr.getAddress())));
-                    if (found)
-                        count.getAndIncrement();
-                });
-
-
-        assertEquals(10, keepResponse.size());
-        assertEquals(10, count.get());
-        assertEquals(50, countAddr.get());
-        assertEquals("Moeng", keepResponse.get(0).getAddresses().get(0).getCity());
-
-        DB.close();
-    }
-
-    @Test
-    public void findByDepartmentId() {
-        EmployeeDto employee = mockData();
-
-        EmployeeDto response = employeeController.createEmployee(employee);
-        Long id = response.getCompany().getOffice().getDepartment().getId();
-
-
-        List<EmployeeDto> responses = employeeController.findByDepartmentId(id);
-
-        assertTrue(responses.size() > 0);
-
-        DB.close();
-    }
-
-    @Test
-    public void findByOfficeId() {
-        EmployeeDto employeeDto = mockData();
-
-        EmployeeDto response = employeeController.createEmployee(employeeDto);
-        Long id = response.getCompany().getOffice().getId();
-
-        List<EmployeeDto> responses = employeeController.findByOfficeId(id);
-
-        assertTrue(responses.size() > 0);
-
-        DB.close();
-    }
-
-    @Test
-    public void deleteAll(){
-        IntStream.range(0, 10).forEach(i -> {
-            EmployeeDto employeeDto = mockData();
-            EmployeeDto response = employeeController.createEmployee(employeeDto);
-        });
-
-        employeeController.deleteAll();
-
-        List<EmployeeDto> employeeDtos = employeeController.findAll();
-        assertEquals(0, employeeDtos.size());
+       assertEquals(Long.valueOf(1), companyDto.getId());
+       assertTrue(companyDto.getEmployee().getAddresses().size() > 0);
     }
 }
