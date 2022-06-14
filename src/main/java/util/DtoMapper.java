@@ -1,52 +1,52 @@
 package util;
 
-import dtos.EmployeeDto;
+import dtos.CompanyDto;
 import entityes.*;
 
 public class DtoMapper {
-    public static EmployeeDto toEmployeeDto(Employee employee) {
-        EmployeeDto employeeResponseDto = new EmployeeDto();
-        employeeResponseDto.setId(employee.getId());
-        employeeResponseDto.setTitleName(employee.getTitleName());
-        employeeResponseDto.setFirstName(employee.getFirstName());
-        employeeResponseDto.setSurName(employee.getSurName());
-        employeeResponseDto.setAge(employee.getAge());
-
-        return employeeResponseDto;
-    }
-
-    public static EmployeeDto.Address toAddressDto(Address address) {
-        EmployeeDto.Address addressDto = new EmployeeDto.Address();
-        addressDto.setId(address.getId());
-        addressDto.setAddress(address.getAddress());
-        addressDto.setCity(address.getCity());
-        addressDto.setCountry(address.getCountry());
-        addressDto.setPostcode(address.getPostcode());
-
-        return addressDto;
-    }
-
-    public static EmployeeDto.Company toCompanyDto(Company company) {
-        EmployeeDto.Company companyDto = new EmployeeDto.Company();
+    public static CompanyDto toCompanyDto(Company company) {
+        CompanyDto companyDto = new CompanyDto();
         companyDto.setId(company.getId());
-        companyDto.setCompanyConst(company.getCompanyConst());
+        companyDto.setCompanyName(company.getCompanyName());
 
         return companyDto;
     }
 
-    public static EmployeeDto.Department toDepartmentDto(Department department) {
-        EmployeeDto.Department departmentDto = new EmployeeDto.Department();
-        departmentDto.setId(department.getId());
-        departmentDto.setDepartmentName(departmentDto.getDepartmentName());
+    public static CompanyDto.EmployeeDto toEmployeeDto(Employee employee) {
+        CompanyDto.EmployeeDto employeeDto = new CompanyDto.EmployeeDto();
+        employeeDto.setId(employee.getId());
+        employeeDto.setTitleName(employee.getTitleName());
+        employeeDto.setFirstName(employee.getFirstName());
+        employeeDto.setSurName(employee.getSurName());
+        employeeDto.setAge(employee.getAge());
 
-        return departmentDto;
+        return employeeDto;
     }
 
-    public static EmployeeDto.Office toOfficeDto(Office office) {
-        EmployeeDto.Office officeDto = new EmployeeDto.Office();
+    public static CompanyDto.OfficeDto toOfficeDto(Office office) {
+        CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
         officeDto.setId(office.getId());
         officeDto.setOfficeName(office.getOfficeName());
 
         return officeDto;
+    }
+
+    public static CompanyDto.DepartmentDto toDepartmentDto(Department department) {
+        CompanyDto.DepartmentDto departmentDto = new CompanyDto.DepartmentDto();
+        departmentDto.setId(department.getId());
+        departmentDto.setDepartmentName(department.getDepartmentName());
+
+        return departmentDto;
+    }
+
+    public static CompanyDto.AddressDto toAddressDto(Address address) {
+        CompanyDto.AddressDto addressDto = new CompanyDto.AddressDto();
+        addressDto.setAddress(address.getAddress());
+        addressDto.setCity(address.getCity());
+        addressDto.setCountry(address.getCountry());
+        addressDto.setPostcode(address.getPostcode());
+        addressDto.setId(address.getId());
+
+        return addressDto;
     }
 }
