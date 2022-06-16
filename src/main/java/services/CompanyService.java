@@ -40,7 +40,7 @@ public class CompanyService implements CompanyServiceImpl {
         company.setOffices(offices);
         companySave(company);
 
-        return companyResponseDto(company);
+        return null;
     }
 
     @Override
@@ -118,29 +118,6 @@ public class CompanyService implements CompanyServiceImpl {
     @Override
     public List<CompanyDto.DepartmentDto> findAllDepartmentByOfficeId(Long id) {
         return null;
-    }
-
-    private CompanyDto companyResponseDto(Company company) {
-        CompanyDto companyDto = DtoMapper.toCompanyDto(company);
-        List<CompanyDto.OfficeDto> officeDtos = new ArrayList<>();
-
-        company.getOffices()
-                .stream()
-                .parallel()
-                .forEach(off -> {
-                    CompanyDto.OfficeDto officeDto = DtoMapper.toOfficeDto(off);
-                    List<CompanyDto.DepartmentDto> departmentDtos = off.getDepartments()
-                            .stream()
-                            .map(DtoMapper::toDepartmentDto)
-                            .collect(Collectors.toList());
-
-                    officeDto.setDepartmentDtos(departmentDtos);
-                    officeDtos.add(officeDto);
-                });
-
-        companyDto.setOffices(officeDtos);
-
-        return companyDto;
     }
 
     private CompanyDto.EmployeeDto employeeResponseDto(Employee employee) {
