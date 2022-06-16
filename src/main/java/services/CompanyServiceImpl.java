@@ -2,10 +2,13 @@ package services;
 
 import dtos.CompanyDto;
 
+import java.rmi.NoSuchObjectException;
 import java.util.List;
 
 public interface CompanyServiceImpl {
-    CompanyDto createEmployee(CompanyDto companyDto);
+    CompanyDto createCompany(CompanyDto companyDto);
+
+    CompanyDto.EmployeeDto createEmployee(CompanyDto.EmployeeDto employeeDto) throws NoSuchObjectException;
 
     CompanyDto findAllEmployee();
 
