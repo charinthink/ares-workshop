@@ -13,8 +13,14 @@ public class CompanyController implements CompanyControllerImpl {
     }
 
     @Override
-    public CompanyDto createEmployee(CompanyDto companyDto) {
-        CompanyDto response = companyService.createEmployee(companyDto);
+    public CompanyDto createCompany(CompanyDto companyDto) {
+        CompanyDto response = companyService.createCompany(companyDto);
+        return response;
+    }
+
+    @Override
+    public CompanyDto.EmployeeDto createEmployee(CompanyDto.EmployeeDto employeeDto) {
+        CompanyDto.EmployeeDto response = companyService.createEmployee(employeeDto);
         return response;
     }
 

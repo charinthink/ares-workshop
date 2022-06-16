@@ -1,17 +1,19 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import consts.CompanyConst;
 import consts.DepartmentConst;
 import consts.OfficeConst;
 import controllers.CompanyController;
 import dtos.CompanyDto;
-import entityes.Employee;
+import entityes.Office;
 import org.junit.Test;
 import services.CompanyService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,47 +26,113 @@ public class EmployeeTest {
         companyController = new CompanyController(companyService);
     }
 
-    public CompanyDto mockData() {
+    public CompanyDto mockDataCompany() {
         CompanyDto companyDto = new CompanyDto();
         companyDto.setId(1L);
         companyDto.setCompanyName(CompanyConst.GREEK_TECHNOLOGY);
+
+        List<CompanyDto.OfficeDto> officeDtos = new ArrayList<>();
+        IntStream.range(0, 2)
+                .forEach(i -> {
+                    List<CompanyDto.DepartmentDto> departmentDtos = new ArrayList<>();
+                    IntStream.range(0, 2)
+                            .forEach(x -> {
+                                CompanyDto.DepartmentDto departmentDto = new CompanyDto.DepartmentDto();
+                                departmentDto.setId((long) (x + 1));
+                                departmentDto.setDepartmentName(x != 0 ? DepartmentConst.ZEUS : DepartmentConst.ATHENA);
+
+                                departmentDtos.add(departmentDto);
+                            });
+
+                    CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
+                    officeDto.setId((long) (i + 1));
+                    officeDto.setOfficeName(i != 0 ? OfficeConst.KUBERNETES_CAMPUS : OfficeConst.DOCKER_CAMPUS);
+                    officeDto.setDepartmentDtos(departmentDtos);
+
+                    officeDtos.add(officeDto);
+                });
+        companyDto.setOffices(officeDtos);
+
+        return companyDto;
+    }
+
+    public CompanyDto.EmployeeDto mockDataEmployee() {
+        CompanyDto.EmployeeDto employeeDto = new CompanyDto.EmployeeDto();
+        employeeDto.setTitleName("Mr");
+        employeeDto.setFirstName("Test");
+        employeeDto.setSurName("Test Test");
+        employeeDto.setAge(20);
+
+        CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
+        officeDto.setId(1L);
+        officeDto.setOfficeName(OfficeConst.KUBERNETES_CAMPUS);
 
         CompanyDto.DepartmentDto departmentDto = new CompanyDto.DepartmentDto();
         departmentDto.setId(1L);
         departmentDto.setDepartmentName(DepartmentConst.ZEUS);
 
-        CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
-        officeDto.setId(1L);
-        officeDto.setOfficeName(OfficeConst.KUBERNETES_CAMPUS);
-        officeDto.setDepartment(departmentDto);
+        CompanyDto companyDto = new CompanyDto();
+        companyDto.setId(1L);
+        companyDto.setCompanyName(CompanyConst.GREEK_TECHNOLOGY);
 
-        List<CompanyDto.AddressDto> addressesDto = new ArrayList<>();
-        CompanyDto.AddressDto addressDto = new CompanyDto.AddressDto();
-        addressDto.setAddress("1112");
-        addressDto.setCity("Thai");
-        addressDto.setCountry("Thailand");
-        addressDto.setPostcode("11000");
-        addressesDto.add(addressDto);
-
-        CompanyDto.EmployeeDto employeeDto = new CompanyDto.EmployeeDto();
-        employeeDto.setTitleName("Mr");
-        employeeDto.setFirstName("demo");
-        employeeDto.setSurName("demodemo");
-        employeeDto.setAge(20);
-        employeeDto.setAddresses(addressesDto);
+        employeeDto.setCompany(companyDto);
         employeeDto.setOffice(officeDto);
+        employeeDto.setDepartment(departmentDto);
 
-        companyDto.setEmployee(employeeDto);
-
-        return companyDto;
+        return employeeDto;
     }
 
     @Test
-    public void createEmployee() throws JsonProcessingException {
-        CompanyDto data = mockData();
-        CompanyDto companyDto = companyController.createEmployee(data);
+    public void createCompany() {
+        CompanyDto companyDto = mockDataCompany();
+        CompanyDto response = companyController.createCompany(companyDto);
 
-       assertEquals(Long.valueOf(1), companyDto.getId());
-       assertTrue(companyDto.getEmployee().getAddresses().size() > 0);
+        Long number = response.getOffices()
+                .stream()
+                .map(CompanyDto.OfficeDto::getDepartmentDtos)
+                .mapToLong(Collection::size)
+                .sum();
+
+        assertEquals(2, response.getOffices().size());
+        assertEquals(Long.valueOf(4), number);
+    }
+
+    @Test
+    public void createEmployee() {
+        CompanyDto companyDto = mockDataCompany();
+        companyController.createCompany(companyDto);
+
+        List<CompanyDto.AddressDto> addressDtos = new ArrayList<>();
+        IntStream.range(0, 2)
+                .forEach(x -> {
+                    CompanyDto.AddressDto addressDto = new CompanyDto.AddressDto();
+                    addressDto.setAddress("111");
+                    addressDto.setCity("Thai");
+                    addressDto.setCountry("Thailand");
+                    addressDto.setPostcode("11111");
+
+                    addressDtos.add(addressDto);
+                });
+
+        CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
+        officeDto.setId(1L);
+
+        CompanyDto.DepartmentDto departmentDto = new CompanyDto.DepartmentDto();
+        departmentDto.setId(1L);
+
+        CompanyDto.EmployeeDto employeeDto = new CompanyDto.EmployeeDto();
+        employeeDto.setTitleName("Mr");
+        employeeDto.setFirstName("World Wide Web");
+        employeeDto.setSurName("WWW");
+        employeeDto.setAge(25);
+        employeeDto.setAddresses(addressDtos);
+        employeeDto.setOffice(officeDto);
+        employeeDto.setDepartment(departmentDto);
+
+        CompanyDto.EmployeeDto response = companyController.createEmployee(employeeDto);
+
+        assertTrue(Objects.nonNull(response.getId()));
+        assertEquals(OfficeConst.DOCKER_CAMPUS, response.getOffice().getOfficeName());
+        assertEquals(DepartmentConst.ATHENA, response.getDepartment().getDepartmentName());
     }
 }

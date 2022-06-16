@@ -5,6 +5,7 @@ import consts.CompanyConst;
 import consts.DepartmentConst;
 import consts.OfficeConst;
 import entityes.Address;
+import entityes.Office;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +17,8 @@ import java.util.List;
 public class CompanyDto {
     private Long id;
     private CompanyConst companyName;
-    private EmployeeDto employee;
     private List<EmployeeDto> employeesDto;
+    private List<OfficeDto> offices;
 
     @Getter
     @Setter
@@ -29,6 +30,8 @@ public class CompanyDto {
         private String surName;
         private Integer age;
         private OfficeDto office;
+        private CompanyDto company;
+        private DepartmentDto department;
         private List<AddressDto> addresses;
     }
 
@@ -49,7 +52,7 @@ public class CompanyDto {
     public static class OfficeDto {
         private Long id;
         private OfficeConst officeName;
-        private DepartmentDto department;
+        private List<DepartmentDto> departmentDtos;
     }
 
     @Getter
