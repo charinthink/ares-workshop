@@ -76,7 +76,7 @@ public class CompanyService implements CompanyServiceImpl {
     }
 
     @Override
-    public CompanyDto findAllEmployee() {
+    public List<CompanyDto.EmployeeDto> findAllEmployee() {
         return null;
     }
 
