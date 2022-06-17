@@ -25,13 +25,15 @@ public class CompanyController implements CompanyControllerImpl {
     }
 
     @Override
-    public CompanyDto findAllEmployee() {
-        return null;
+    public List<CompanyDto.EmployeeDto> findAllEmployee() {
+        List<CompanyDto.EmployeeDto> response = companyService.findAllEmployee();
+        return response;
     }
 
     @Override
-    public CompanyDto.EmployeeDto findById(Long id) {
-        return null;
+    public CompanyDto.EmployeeDto findEmployeeById(Long id) {
+        CompanyDto.EmployeeDto response = companyService.findEmployeeById(id);
+        return response;
     }
 
     @Override
