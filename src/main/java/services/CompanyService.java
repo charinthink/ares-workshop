@@ -81,7 +81,7 @@ public class CompanyService implements CompanyServiceImpl {
     }
 
     @Override
-    public CompanyDto.EmployeeDto findById(Long id) {
+    public CompanyDto.EmployeeDto findEmployeeById(Long id) {
         return null;
     }
 
