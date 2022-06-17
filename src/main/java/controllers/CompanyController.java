@@ -38,12 +38,14 @@ public class CompanyController implements CompanyControllerImpl {
 
     @Override
     public CompanyDto.EmployeeDto updateEmployee(Long id, CompanyDto.EmployeeDto employeeDto) {
-        return null;
+        CompanyDto.EmployeeDto response = companyService.updateEmployee(id, employeeDto);
+        return response;
     }
 
     @Override
-    public CompanyDto.EmployeeDto findByDepartmentId(Long id) {
-        return null;
+    public List<CompanyDto.EmployeeDto> findByDepartmentId(Long id) {
+        List<CompanyDto.EmployeeDto> response = companyService.findByDepartmentId(id);
+        return response;
     }
 
     @Override

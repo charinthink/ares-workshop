@@ -61,6 +61,18 @@ public class EmployeeTest {
         employeeDto.setSurName("Test Test");
         employeeDto.setAge(20);
 
+        List<CompanyDto.AddressDto> addressDtos = new ArrayList<>();
+        IntStream.range(0, 2)
+                .forEach(i -> {
+                    CompanyDto.AddressDto addressDto = new CompanyDto.AddressDto();
+                    addressDto.setAddress("1111");
+                    addressDto.setCountry("Thailand");
+                    addressDto.setCity("Thai");
+                    addressDto.setPostcode("11111");
+
+                    addressDtos.add(addressDto);
+                });
+
         CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
         officeDto.setId(1L);
         officeDto.setOfficeName(OfficeConst.KUBERNETES_CAMPUS);
@@ -76,6 +88,7 @@ public class EmployeeTest {
         employeeDto.setCompany(companyDto);
         employeeDto.setOffice(officeDto);
         employeeDto.setDepartment(departmentDto);
+        employeeDto.setAddresses(addressDtos);
 
         return employeeDto;
     }
@@ -100,39 +113,14 @@ public class EmployeeTest {
     public void createEmployee() {
         CompanyDto companyDto = mockDataCompany();
         companyController.createCompany(companyDto);
-
-        List<CompanyDto.AddressDto> addressDtos = new ArrayList<>();
-        IntStream.range(0, 2)
-                .forEach(x -> {
-                    CompanyDto.AddressDto addressDto = new CompanyDto.AddressDto();
-                    addressDto.setAddress("111");
-                    addressDto.setCity("Thai");
-                    addressDto.setCountry("Thailand");
-                    addressDto.setPostcode("11111");
-
-                    addressDtos.add(addressDto);
-                });
-
-        CompanyDto.OfficeDto officeDto = new CompanyDto.OfficeDto();
-        officeDto.setId(1L);
-
-        CompanyDto.DepartmentDto departmentDto = new CompanyDto.DepartmentDto();
-        departmentDto.setId(1L);
-
-        CompanyDto.EmployeeDto employeeDto = new CompanyDto.EmployeeDto();
-        employeeDto.setTitleName("Mr");
-        employeeDto.setFirstName("World Wide Web");
-        employeeDto.setSurName("WWW");
-        employeeDto.setAge(25);
-        employeeDto.setAddresses(addressDtos);
-        employeeDto.setOffice(officeDto);
-        employeeDto.setDepartment(departmentDto);
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
 
         CompanyDto.EmployeeDto response = companyController.createEmployee(employeeDto);
 
         assertTrue(Objects.nonNull(response.getId()));
         assertEquals(OfficeConst.DOCKER_CAMPUS, response.getOffice().getOfficeName());
         assertEquals(DepartmentConst.ATHENA, response.getDepartment().getDepartmentName());
+        assertEquals(2, response.getAddresses().size());
     }
 
     @Test
@@ -174,5 +162,23 @@ public class EmployeeTest {
         });
 
         assertEquals(5, sum.get());
+    }
+
+    @Test
+    public void updateEmployee(){
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+        CompanyDto companyDto = mockDataCompany();
+
+        companyController.createCompany(companyDto);
+        CompanyDto.EmployeeDto employeeDtoRes = companyController.createEmployee(employeeDto);
+
+        employeeDtoRes.setFirstName("Testt");
+        employeeDtoRes = companyController.updateEmployee(employeeDtoRes.getId(), employeeDtoRes);
+
+        CompanyDto.EmployeeDto employeeDtoResFinal = employeeDtoRes;
+        employeeDtoRes = companyController.findAllEmployee().stream().filter(res -> res.getId().equals(employeeDtoResFinal.getId())).findFirst().orElse(null);
+
+        assertEquals("Testt", employeeDtoRes.getFirstName());
+        assertEquals(2, employeeDtoRes.getAddresses().size());
     }
 }
