@@ -16,7 +16,7 @@ public interface CompanyServiceImpl {
 
     CompanyDto.EmployeeDto updateEmployee(Long id, CompanyDto.EmployeeDto employeeDto);
 
-    CompanyDto.EmployeeDto findByDepartmentId(Long id);
+    List<CompanyDto.EmployeeDto> findByDepartmentId(Long id);
 
     CompanyDto.EmployeeDto findByOfficeId(Long id);
 
