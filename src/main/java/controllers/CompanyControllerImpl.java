@@ -10,9 +10,9 @@ public interface CompanyControllerImpl {
 
     CompanyDto.EmployeeDto createEmployee(CompanyDto.EmployeeDto employeeDto) throws NoSuchObjectException;
 
-    CompanyDto findAllEmployee();
+    List<CompanyDto.EmployeeDto> findAllEmployee();
 
-    CompanyDto.EmployeeDto findById(Long id);
+    CompanyDto.EmployeeDto findEmployeeById(Long id);
 
     CompanyDto.EmployeeDto updateEmployee(Long id, CompanyDto.EmployeeDto employeeDto);
 

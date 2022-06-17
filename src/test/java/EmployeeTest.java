@@ -1,10 +1,8 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
 import consts.CompanyConst;
 import consts.DepartmentConst;
 import consts.OfficeConst;
 import controllers.CompanyController;
 import dtos.CompanyDto;
-import entityes.Office;
 import org.junit.Test;
 import services.CompanyService;
 
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
@@ -85,6 +83,7 @@ public class EmployeeTest {
     @Test
     public void createCompany() {
         CompanyDto companyDto = mockDataCompany();
+
         CompanyDto response = companyController.createCompany(companyDto);
 
         Long number = response.getOffices()
@@ -134,5 +133,46 @@ public class EmployeeTest {
         assertTrue(Objects.nonNull(response.getId()));
         assertEquals(OfficeConst.DOCKER_CAMPUS, response.getOffice().getOfficeName());
         assertEquals(DepartmentConst.ATHENA, response.getDepartment().getDepartmentName());
+    }
+
+    @Test
+    public void findAllEmployee() {
+        CompanyDto companyDto = mockDataCompany();
+        companyController.createCompany(companyDto);
+
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+        IntStream.range(0, 10)
+                .forEach(i -> {
+                    companyController.createEmployee(employeeDto);
+                });
+
+        List<CompanyDto.EmployeeDto> employeeDtos = companyController.findAllEmployee();
+
+        assertEquals(10, employeeDtos.size());
+    }
+
+    @Test
+    public void findEmployeeById() {
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+        CompanyDto companyDto = mockDataCompany();
+
+        companyController.createCompany(companyDto);
+        List<Long> id = new ArrayList<>();
+        IntStream.range(0, 5)
+                .forEach(i -> {
+                    CompanyDto.EmployeeDto response = companyController.createEmployee(employeeDto);
+
+                    id.add(response.getId());
+                });
+
+        AtomicInteger sum = new AtomicInteger(0);
+        id.stream().forEach(idR -> {
+            CompanyDto.EmployeeDto response = companyController.findEmployeeById(idR);
+
+            if(Objects.nonNull(response.getId()))
+                sum.getAndIncrement();
+        });
+
+        assertEquals(5, sum.get());
     }
 }
