@@ -56,7 +56,7 @@ public class CompanyController implements CompanyControllerImpl {
 
     @Override
     public void deleteAllEmployee() {
-
+        companyService.deleteAllEmployee();
     }
 
     @Override

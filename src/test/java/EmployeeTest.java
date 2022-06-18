@@ -3,6 +3,10 @@ import consts.DepartmentConst;
 import consts.OfficeConst;
 import controllers.CompanyController;
 import dtos.CompanyDto;
+import entityes.Company;
+import entityes.Department;
+import entityes.Employee;
+import entityes.Office;
 import org.junit.Test;
 import org.junit.experimental.theories.suppliers.TestedOn;
 import services.CompanyService;
@@ -12,8 +16,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static db_on_memory.DB.companyQuery;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -207,5 +213,20 @@ public class EmployeeTest {
         List<CompanyDto.EmployeeDto> employeeDtos = companyController.findByOfficeId(1L);
 
         assertTrue(employeeDtos.size() > 0);
+    }
+
+    @Test
+    public void deleteAllEmployee() {
+        CompanyDto companyDto = mockDataCompany();
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+
+        companyController.createCompany(companyDto);
+        companyController.createEmployee(employeeDto);
+        companyController.deleteAllEmployee();
+
+        Company companyDb = companyQuery();
+        List<Employee> employeesDb = companyDb.getEmployees();
+
+        assertEquals(0, employeesDb.size());
     }
 }
