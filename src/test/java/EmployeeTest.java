@@ -229,4 +229,28 @@ public class EmployeeTest {
 
         assertEquals(0, employeesDb.size());
     }
+
+    @Test
+    public void deleteByEmployeeId() {
+        CompanyDto companyDto = mockDataCompany();
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+
+        companyController.createCompany(companyDto);
+        employeeDto = companyController.createEmployee(employeeDto);
+        companyController.deleteByEmployeeId(employeeDto.getId());
+
+        Company companyDb = companyQuery();
+
+        assertEquals(0, companyDb.getEmployees().size());
+    }
+
+    @Test
+    public void findAllDepartmentByOfficeId() {
+        CompanyDto companyDto = mockDataCompany();
+        companyController.createCompany(companyDto);
+
+        List<CompanyDto.DepartmentDto> departmentDtos = companyController.findAllDepartmentByOfficeId(1L);
+
+        assertEquals(2, departmentDtos.size());
+    }
 }

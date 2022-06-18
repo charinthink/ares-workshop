@@ -61,16 +61,12 @@ public class CompanyController implements CompanyControllerImpl {
 
     @Override
     public void deleteByEmployeeId(Long id) {
-
-    }
-
-    @Override
-    public List<CompanyDto.EmployeeDto> findByCompanyId(Long id) {
-        return null;
+        companyService.deleteByEmployeeId(id);
     }
 
     @Override
     public List<CompanyDto.DepartmentDto> findAllDepartmentByOfficeId(Long id) {
-        return null;
+        List<CompanyDto.DepartmentDto> response = companyService.findAllDepartmentByOfficeId(id);
+        return response;
     }
 }
