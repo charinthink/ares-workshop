@@ -24,7 +24,5 @@ public interface CompanyControllerImpl {
 
     void deleteByEmployeeId(Long id);
 
-    List<CompanyDto.EmployeeDto> findByCompanyId(Long id);
-
     List<CompanyDto.DepartmentDto> findAllDepartmentByOfficeId(Long id);
 }
