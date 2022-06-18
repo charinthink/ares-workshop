@@ -4,6 +4,7 @@ import consts.OfficeConst;
 import controllers.CompanyController;
 import dtos.CompanyDto;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 import services.CompanyService;
 
 import java.util.ArrayList;
@@ -113,8 +114,8 @@ public class EmployeeTest {
     public void createEmployee() {
         CompanyDto companyDto = mockDataCompany();
         companyController.createCompany(companyDto);
-        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
 
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
         CompanyDto.EmployeeDto response = companyController.createEmployee(employeeDto);
 
         assertTrue(Objects.nonNull(response.getId()));
@@ -157,7 +158,7 @@ public class EmployeeTest {
         id.stream().forEach(idR -> {
             CompanyDto.EmployeeDto response = companyController.findEmployeeById(idR);
 
-            if(Objects.nonNull(response.getId()))
+            if (Objects.nonNull(response.getId()))
                 sum.getAndIncrement();
         });
 
@@ -165,7 +166,7 @@ public class EmployeeTest {
     }
 
     @Test
-    public void updateEmployee(){
+    public void updateEmployee() {
         CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
         CompanyDto companyDto = mockDataCompany();
 
@@ -180,5 +181,31 @@ public class EmployeeTest {
 
         assertEquals("Testt", employeeDtoRes.getFirstName());
         assertEquals(2, employeeDtoRes.getAddresses().size());
+    }
+
+    @Test
+    public void findByDepartmentId() {
+        CompanyDto companyDto = mockDataCompany();
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+
+        companyController.createCompany(companyDto);
+        companyController.createEmployee(employeeDto);
+
+        List<CompanyDto.EmployeeDto> employeeDtos = companyController.findByDepartmentId(1L);
+
+        assertTrue(employeeDtos.size() > 0);
+    }
+
+    @Test
+    public void findByOfficeId() {
+        CompanyDto companyDto = mockDataCompany();
+        CompanyDto.EmployeeDto employeeDto = mockDataEmployee();
+
+        companyController.createCompany(companyDto);
+        companyController.createEmployee(employeeDto);
+
+        List<CompanyDto.EmployeeDto> employeeDtos = companyController.findByOfficeId(1L);
+
+        assertTrue(employeeDtos.size() > 0);
     }
 }

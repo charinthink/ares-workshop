@@ -49,8 +49,9 @@ public class CompanyController implements CompanyControllerImpl {
     }
 
     @Override
-    public CompanyDto.EmployeeDto findByOfficeId(Long id) {
-        return null;
+    public List<CompanyDto.EmployeeDto> findByOfficeId(Long id) {
+        List<CompanyDto.EmployeeDto> response = companyService.findByOfficeId(id);
+        return response;
     }
 
     @Override
