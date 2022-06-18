@@ -19,11 +19,10 @@ public class CompanyService implements CompanyServiceImpl {
     @Override
     public CompanyDto createCompany(CompanyDto companyDto) {
         Company company = EntityMapper.toCompany(companyDto);
-        List<Office> offices = new ArrayList<>();
 
+        List<Office> offices = new ArrayList<>();
         companyDto.getOffices()
                 .stream()
-                .parallel()
                 .forEach(off -> {
                     Office office = EntityMapper.toOffice(off);
                     List<Department> departments = off.getDepartmentDtos()
@@ -45,23 +44,26 @@ public class CompanyService implements CompanyServiceImpl {
     public CompanyDto.EmployeeDto createEmployee(CompanyDto.EmployeeDto employeeDto) {
         Employee employee = EntityMapper.toEmployee(employeeDto);
         Company companyDb = companyQuery();
+
+        Long officeDtoId = employeeDto.getOffice().getId();
+        Long departmentDtoId = employeeDto.getDepartment().getId();
         Office office = companyDb.getOffices()
                 .stream()
-                .filter(off -> off.getId().equals(employeeDto.getOffice().getId()))
+                .filter(off -> off.getId().equals(officeDtoId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("id"));
         Department department = office.getDepartments()
                 .stream()
-                .filter(deprt -> deprt.getId().equals(employeeDto.getDepartment().getId()))
+                .filter(deprt -> deprt.getId().equals(departmentDtoId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("id"));
         List<Address> addresses = employeeDto.getAddresses()
                 .stream()
-                .peek(addr -> addr.setId((long) (Math.random() * 100)))
+                .peek(addr -> addr.setId((long) (Math.random() * 100) + 100))
                 .map(EntityMapper::toAddress)
                 .collect(Collectors.toList());
 
-        employee.setId((long) (Math.random() * 100));
+        employee.setId((long) (Math.random() * 100) + 100);
         employee.setOffice(office);
         employee.setDepartment(department);
         employee.setCompany(companyDb);
@@ -71,8 +73,16 @@ public class CompanyService implements CompanyServiceImpl {
         employees.add(employee);
 
         companyDb.setEmployees(employees);
-        office.setEmployees(employees);
-        department.setEmployees(employees);
+
+        companyDb.getOffices()
+                .stream()
+                .filter(off -> off.getId().equals(officeDtoId))
+                .forEach(off -> {
+                    off.setEmployees(employees);
+                    off.getDepartments()
+                            .stream().filter(dp -> dp.getId().equals(departmentDtoId))
+                            .forEach(dp -> dp.setEmployees(employees));
+                });
 
         companySave(companyDb);
 
