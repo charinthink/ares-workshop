@@ -1,15 +1,13 @@
 package services;
 
 import dtos.CompanyDto;
-import entityes.Company;
-import entityes.Department;
-import entityes.Employee;
-import entityes.Office;
+import entityes.*;
 import util.DtoMapper;
 import util.EntityMapper;
 
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -57,11 +55,17 @@ public class CompanyService implements CompanyServiceImpl {
                 .filter(deprt -> deprt.getId().equals(employeeDto.getDepartment().getId()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("id"));
+        List<Address> addresses = employeeDto.getAddresses()
+                .stream()
+                .peek(addr -> addr.setId((long) (Math.random() * 100)))
+                .map(EntityMapper::toAddress)
+                .collect(Collectors.toList());
 
         employee.setId((long) (Math.random() * 100));
         employee.setOffice(office);
         employee.setDepartment(department);
         employee.setCompany(companyDb);
+        employee.setAddresses(addresses);
 
         List<Employee> employees = Objects.isNull(companyDb.getEmployees()) ? new ArrayList<>() : companyDb.getEmployees();
         employees.add(employee);
@@ -91,12 +95,12 @@ public class CompanyService implements CompanyServiceImpl {
     }
 
     @Override
-    public CompanyDto.EmployeeDto findByDepartmentId(Long id) {
+    public List<CompanyDto.EmployeeDto> findByDepartmentId(Long id) {
         return null;
     }
 
     @Override
-    public CompanyDto.EmployeeDto findByOfficeId(Long id) {
+    public List<CompanyDto.EmployeeDto> findByOfficeId(Long id) {
         return null;
     }
 
@@ -125,10 +129,16 @@ public class CompanyService implements CompanyServiceImpl {
         CompanyDto.OfficeDto officeDto = DtoMapper.toOfficeDto(employee.getOffice());
         CompanyDto.DepartmentDto departmentDto = DtoMapper.toDepartmentDto(employee.getDepartment());
         CompanyDto companyDto = DtoMapper.toCompanyDto(employee.getCompany());
+        List<CompanyDto.AddressDto> addressDtos = employee.getAddresses()
+                .stream()
+                .map(DtoMapper::toAddressDto)
+                .collect(Collectors.toList());
+
 
         employeeDto.setOffice(officeDto);
         employeeDto.setDepartment(departmentDto);
         employeeDto.setCompany(companyDto);
+        employeeDto.setAddresses(addressDtos);
 
         return employeeDto;
     }
