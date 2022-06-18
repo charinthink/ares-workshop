@@ -125,11 +125,6 @@ public class CompanyService implements CompanyServiceImpl {
     }
 
     @Override
-    public List<CompanyDto.EmployeeDto> findByCompanyId(Long id) {
-        return null;
-    }
-
-    @Override
     public List<CompanyDto.DepartmentDto> findAllDepartmentByOfficeId(Long id) {
         return null;
     }
