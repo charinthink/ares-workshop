@@ -82,31 +82,39 @@
 ### Schema 'Employee' Request
 
 ```json
-    {
-    "titleName": "Mr",
-    "firstName": "World Wide Web",
-    "surName": "WWW",
-    "age": 25,
-    "office": {
-        "id": 1
-    },
-    "department": {
-        "id": 1
-    },
-    "addresses": [
-        {
-            "address": "111",
-            "city": "Thai",
-            "country": "Thailand",
-            "postcode": "11111"
-        },
-        {
-            "address": "111",
-            "city": "Thai",
-            "country": "Thailand",
-            "postcode": "11111"
-        }
-    ]
+ {
+   "titleName":"Mr",
+   "firstName":"Test",
+   "surName":"Test Test",
+   "age":20,
+   "office":{
+      "id":1,
+      "officeName":"KUBERNETES_CAMPUS"
+   },
+   "company":{
+      "id":1,
+      "companyName":"GREEK_TECHNOLOGY"
+   },
+   "department":{
+      "id":1,
+      "departmentName":"ZEUS"
+   },
+   "addresses":[
+      {
+         "id":125,
+         "address":"1111",
+         "city":"Thai",
+         "country":"Thailand",
+         "postcode":"11111"
+      },
+      {
+         "id":102,
+         "address":"1111",
+         "city":"Thai",
+         "country":"Thailand",
+         "postcode":"11111"
+      }
+   ]
 }
 ```
 
