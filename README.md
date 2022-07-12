@@ -40,7 +40,7 @@
     ]
 }
 ```
-### Schema 'Employee' Format JSON
+### Schema 'Employee' Request
 
 ```json
     {
