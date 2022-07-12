@@ -70,3 +70,42 @@
     ]
 }
 ```
+
+ ### Shema 'Employee' Response
+ ```json
+ {
+      "id":169,
+      "titleName":"Mr",
+      "firstName":"Test",
+      "surName":"Test Test",
+      "age":20,
+      "office":{
+         "id":1,
+         "officeName":"DOCKER_CAMPUS"
+      },
+      "company":{
+         "id":1,
+         "companyName":"GREEK_TECHNOLOGY"
+      },
+      "department":{
+         "id":1,
+         "departmentName":"ATHENA"
+      },
+      "addresses":[
+         {
+            "id":196,
+            "address":"1111",
+            "city":"Thai",
+            "country":"Thailand",
+            "postcode":"11111"
+         },
+         {
+            "id":102,
+            "address":"1111",
+            "city":"Thai",
+            "country":"Thailand",
+            "postcode":"11111"
+         }
+      ]
+   }
+```
