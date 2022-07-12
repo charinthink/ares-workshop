@@ -82,33 +82,30 @@
 ### Schema 'Employee' Request
 
 ```json
- {
+{
    "titleName":"Mr",
    "firstName":"Test",
    "surName":"Test Test",
    "age":20,
    "office":{
-      "id":1,
-      "officeName":"KUBERNETES_CAMPUS"
+      "id":1
    },
    "company":{
-      "id":1,
-      "companyName":"GREEK_TECHNOLOGY"
+      "id":1
    },
    "department":{
-      "id":1,
-      "departmentName":"ZEUS"
+      "id":1
    },
    "addresses":[
       {
-         "id":125,
+         "id":166,
          "address":"1111",
          "city":"Thai",
          "country":"Thailand",
          "postcode":"11111"
       },
       {
-         "id":102,
+         "id":168,
          "address":"1111",
          "city":"Thai",
          "country":"Thailand",
